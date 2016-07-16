@@ -1,0 +1,110 @@
+{
+  "template": "japan-township-level-gis",
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "index": {
+        "analysis": {
+          "analyzer": {
+            "romaji_analyzer": {
+              "tokenizer": "kuromoji_tokenizer",
+              "mode": "normal",
+              "filter": [
+                "romaji_readingform"
+              ]
+            },
+            "katakana_analyzer": {
+              "tokenizer": "kuromoji_tokenizer",
+              "mode": "normal",
+              "filter": [
+                "katakana_readingform"
+              ]
+            }
+          },
+          "filter": {
+            "romaji_readingform": {
+              "type": "kuromoji_readingform",
+              "use_romaji": true
+            },
+            "katakana_readingform": {
+              "type": "kuromoji_readingform",
+              "use_romaji": false
+            }
+          }
+        }
+      }
+    },
+    "mappings": {
+      "_default_": {
+        "dynamic_templates": [],
+        "properties": {
+          "location": {
+            "type": "geo_point"
+          },
+          "city": {
+            "type": "string",
+            "analyzer": "kuromoji",
+            "fields": {
+              "katakana": {
+                "type": "string",
+                "analyzer": "katakana_analyzer",
+                "fielddata": true
+              },
+              "romaji": {
+                "type": "string",
+                "analyzer": "romaji_analyzer",
+                "fielddata": true
+              },
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed"
+              }
+            }
+          },
+          "prefecture": {
+            "type": "string",
+            "analyzer": "kuromoji",
+            "fields": {
+              "katakana": {
+                "type": "string",
+                "analyzer": "katakana_analyzer",
+                "fielddata": true
+              },
+              "romaji": {
+                "type": "string",
+                "analyzer": "romaji_analyzer",
+                "fielddata": true
+              },
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed"
+              }
+            }
+          },
+          "township": {
+            "type": "string",
+            "analyzer": "kuromoji",
+            "fields": {
+              "katakana": {
+                "type": "string",
+                "analyzer": "katakana_analyzer",
+                "fielddata": true
+              },
+              "romaji": {
+                "type": "string",
+                "analyzer": "romaji_analyzer",
+                "fielddata": true
+              },
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed"
+              }
+            }
+          }
+        },
+        "_all": {
+          "enabled": true
+        }
+      }
+    }
+}
